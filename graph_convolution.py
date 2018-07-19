@@ -21,7 +21,7 @@ class GraphConv(Chain):
         super(GraphConv, self).__init__(
             #  入力　出力　フィルタサイズ
             # Weight
-            W = L.Linear(inp, out)
+            W = L.Linear(None, out)
         )
 
         self.inp = inp
@@ -40,9 +40,9 @@ class GraphConv(Chain):
         tilda_D = np.diag(np.sum(tilda_A, axis=0))
         D = np.diag(np.power(tilda_D,-0.5))
         
-        hat_A = D @ tilda_A @ D 
+        hat_A = F.matmul((F.matmul(D, tilda_A)),D) 
         
-        output = hat_A @ self.W(X)
+        output = F.matmul(hat_A, self.W(X))
         
         return output
 
