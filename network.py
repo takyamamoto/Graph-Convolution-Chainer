@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 21 09:13:59 2018
-
-@author: user
-"""
 
 import chainer
 import chainer.functions as F

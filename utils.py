@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 import chainer
-from chainer import Variable
 
 import numpy as np
 import scipy.sparse as sp
@@ -43,17 +44,11 @@ def load_data(path="./data/cora/", dataset="cora"):
     idx_val = range(200, 500)
     idx_test = range(500, 1500)
 
-    #features = Variable(np.array(features.todense()).astype(np.float32))
     features = np.array(features.todense()).astype(np.float32)
     labels = np.where(labels)[1].astype(np.int8)
     adj = sparse_mx_to_chainer_sparse_variable(adj)
 
-    #idx_train = Variable(idx_train.astype(np.int8))
-    #idx_val = idx_val.astype(np.int8))
-    #idx_test = idx_test.astype(np.int8))
-
     return adj, features, labels, idx_train, idx_val, idx_test
-
 
 def normalize(mx):
     """Row-normalize sparse matrix"""

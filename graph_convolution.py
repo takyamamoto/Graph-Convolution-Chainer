@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 19 15:06:04 2018
-
-@author: user
-"""
 
 from chainer import Parameter
 from chainer import initializers
