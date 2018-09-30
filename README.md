@@ -1,17 +1,16 @@
-# Graph-Convolution-Chainer
-Graph convolution implemented with Chainer
+# Graph Convolutional Networks in Chainer
+Graph Convolutional Networks in Chainer. I referenced [tkipf/pygcn](https://github.com/tkipf/pygcn).
 
 ## Requirement
 ```
-Python == 3.6  
-Chainer == 4.2
+Python >= 3.6  
+Chainer == 5.0
+```
+
+You can install chainer-v5 via following command.
+```
+pip install https://github.com/chainer/chainer/archive/v5.0.0rc1.tar.gz
 ```
 
 ## Usage
 Run `train.py`
-
-## Demo
-Test data is [ZACHARY KARATE CLUB](http://vlado.fmf.uni-lj.si/pub/networks/data/ucinet/ucidata.htm#zachary)  
-Download [here](http://vlado.fmf.uni-lj.si/pub/networks/data/ucinet/zachary.dat)
-
-Classify node(person)  
