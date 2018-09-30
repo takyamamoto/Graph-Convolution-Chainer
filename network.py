@@ -15,7 +15,8 @@ from graph_convolution import GraphConvolution
 
 # Network definition
 class GraphConvolutionalNetwork(chainer.Chain):
-    def __init__(self, n_input, n_mid, n_out, adj, idx_train, idx_val):
+    def __init__(self, n_input, n_mid, n_out, adj, idx_train, idx_val,
+                 test_mode=False):
         super(GraphConvolutionalNetwork, self).__init__()
         with self.init_scope():
             self.gconv1 = GraphConvolution(n_input, n_mid)
@@ -27,6 +28,8 @@ class GraphConvolutionalNetwork(chainer.Chain):
             self.idx_train = idx_train
             self.idx_val = idx_val
             
+            self.test_mode = test_mode
+            
     def __call__(self, inputs):
         x = inputs[:, :self.n_input]
         labels = inputs[:, self.n_input:][:,0].astype(np.int8)
@@ -37,12 +40,15 @@ class GraphConvolutionalNetwork(chainer.Chain):
         
         if chainer.config.train == True:
             loss = F.softmax_cross_entropy(out[self.idx_train], labels[self.idx_train])
-            accuracy = F.accuracy(out[self.idx_train], labels[self.idx_train])        
+            accuracy = F.accuracy(out[self.idx_train], labels[self.idx_train]) 
         else:
             loss = F.softmax_cross_entropy(out[self.idx_val], labels[self.idx_val])
             accuracy = F.accuracy(out[self.idx_val], labels[self.idx_val])
             
         reporter.report({'loss': loss}, self)
         reporter.report({'accuracy': accuracy}, self)
-
-        return loss
+        
+        if self.test_mode == True:
+            return loss, accuracy
+        else:
+            return loss

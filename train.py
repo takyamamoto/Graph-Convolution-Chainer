@@ -2,7 +2,7 @@ import argparse
 
 import chainer
 from chainer import training
-from chainer.training import extensions, triggers
+from chainer.training import extensions
 from chainer import iterators, optimizers, serializers
 import numpy as np
 
@@ -13,7 +13,6 @@ from utils import load_data
 parser = argparse.ArgumentParser()
 parser.add_argument('--gpu', '-g', type=int, default=-1)
 parser.add_argument('--model', '-m', type=str, default=None)
-parser.add_argument('--opt', type=str, default=None)
 parser.add_argument('--epoch', '-e', type=int, default=200)
 parser.add_argument('--lr', '-l', type=float, default=0.01)
 parser.add_argument('--noplot', dest='plot', action='store_false',
@@ -51,10 +50,6 @@ if args.model != None:
     print( "loading model from " + args.model)
     serializers.load_npz(args.model, model)
 
-if args.opt != None:
-    print( "loading opt from " + args.opt)
-    serializers.load_npz(args.opt, optimizer)
-
 updater = training.StandardUpdater(train_iter, optimizer, device=args.gpu)
 trainer = training.Trainer(updater, (args.epoch, 'epoch'), out='results')
 
@@ -81,6 +76,16 @@ trainer.extend(extensions.ProgressBar())
 trainer.run()
 
 # Save results
+print("Optimization Finished!")
 modelname = "./results/model"
-print( "saving model to " + modelname )
+print( "Saving model to " + modelname)
 serializers.save_npz(modelname, model)
+
+# Test
+model = network.GraphConvolutionalNetwork(1433, 16, 7, adj, None, idx_test, True)
+serializers.load_npz("./results/model", model)
+with chainer.using_config('train', False):
+    loss_test, acc_test = model(inputs)
+print("Test set results:\n",
+      "loss =", loss_test.data,
+      "\n accuracy =", acc_test.data)
