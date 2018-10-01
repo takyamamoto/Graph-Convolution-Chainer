@@ -33,7 +33,7 @@ labels = np.expand_dims(labels, 1)
 inputs = np.concatenate((features, labels), axis=1)
 
 train_iter = iterators.SerialIterator(inputs, batch_size=adj.shape[0], shuffle=False)
-test_iter = chainer.iterators.SerialIterator(inputs, batch_size=adj.shape[0], repeat=False, shuffle=False)
+test_iter = iterators.SerialIterator(inputs, batch_size=adj.shape[0], repeat=False, shuffle=False)
 
 # Set up a neural network to train.
 print("Building model")
